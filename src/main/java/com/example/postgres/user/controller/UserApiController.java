@@ -7,6 +7,8 @@ import com.example.postgres.user.exception.UserNotFoundException;
 import com.example.postgres.user.repository.UserRepository;
 import com.example.postgres.user.routes.UserRoutes;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -49,10 +51,21 @@ public class UserApiController {
     @GetMapping(UserRoutes.SEARCH)
     public List<UserResponse> search(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "") String query
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findAll(pageable)
+
+        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+
+        Example<UserEntity> example = Example.of(
+                UserEntity.builder().firstName(query).lastName(query).build(),
+                exampleMatcher
+        );
+
+        return userRepository.findAll(example, pageable)
                 .stream()
                 .map(UserResponse::of)
                 .collect(Collectors.toList());
