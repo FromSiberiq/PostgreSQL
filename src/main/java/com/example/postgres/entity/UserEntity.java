@@ -1,11 +1,12 @@
-package com.example.postgres;
+package com.example.postgres.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -15,9 +16,9 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected Long id;
 
     @Column(name = "first_name")
-    private String firstName;
-    private String lastName;
+    protected String firstName;
+    protected String lastName;
 }
