@@ -12,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,5 +81,11 @@ public class UserApiController {
         user = userRepository.save(user);
 
         return UserResponse.of(user);
+    }
+
+    @DeleteMapping(UserRoutes.BY_ID)
+    public String delete(@PathVariable Long id) throws UserNotFoundException {
+        userRepository.deleteById(id);
+        return HttpStatus.OK.name();
     }
 }
