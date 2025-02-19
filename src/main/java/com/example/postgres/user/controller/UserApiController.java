@@ -1,6 +1,7 @@
 package com.example.postgres.user.controller;
 
 import com.example.postgres.user.dto.request.CreateUserRequest;
+import com.example.postgres.user.dto.request.EditUserRequest;
 import com.example.postgres.user.dto.response.UserResponse;
 import com.example.postgres.user.entity.UserEntity;
 import com.example.postgres.user.exception.UserNotFoundException;
@@ -69,5 +70,15 @@ public class UserApiController {
                 .stream()
                 .map(UserResponse::of)
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping(UserRoutes.BY_ID)
+    public UserResponse edit(@PathVariable Long id, @RequestBody EditUserRequest request) throws UserNotFoundException {
+        UserEntity user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user = userRepository.save(user);
+
+        return UserResponse.of(user);
     }
 }
