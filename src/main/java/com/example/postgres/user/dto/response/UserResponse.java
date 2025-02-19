@@ -1,6 +1,6 @@
-package com.example.postgres.dto.response;
+package com.example.postgres.user.dto.response;
 
-import com.example.postgres.entity.UserEntity;
+import com.example.postgres.user.entity.UserEntity;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 

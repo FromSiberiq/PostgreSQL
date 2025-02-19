@@ -1,16 +1,13 @@
-package com.example.postgres.controller;
+package com.example.postgres.user.controller;
 
-
-import com.example.postgres.dto.request.CreateUserRequest;
-import com.example.postgres.dto.response.UserResponse;
-import com.example.postgres.entity.UserEntity;
-import com.example.postgres.repository.UserRepository;
-import com.example.postgres.routes.UserRoutes;
+import com.example.postgres.user.dto.request.CreateUserRequest;
+import com.example.postgres.user.dto.response.UserResponse;
+import com.example.postgres.user.entity.UserEntity;
+import com.example.postgres.user.exception.UserNotFoundException;
+import com.example.postgres.user.repository.UserRepository;
+import com.example.postgres.user.routes.UserRoutes;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -36,5 +33,11 @@ public class UserApiController {
                 .build();
         user = userRepository.save(user);
         return UserResponse.of(user);
+    }
+
+    @GetMapping(UserRoutes.BY_ID)
+    public UserResponse byId(@PathVariable Long id) throws UserNotFoundException {
+        return UserResponse.of(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
+
     }
 }

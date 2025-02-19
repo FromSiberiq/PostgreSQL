@@ -1,4 +1,4 @@
-package com.example.postgres.entity;
+package com.example.postgres.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

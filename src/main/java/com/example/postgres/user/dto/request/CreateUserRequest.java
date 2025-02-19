@@ -1,4 +1,4 @@
-package com.example.postgres.dto.request;
+package com.example.postgres.user.dto.request;
 
 import lombok.Getter;
 
